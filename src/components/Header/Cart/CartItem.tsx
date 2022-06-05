@@ -8,8 +8,8 @@ const CartItem = ({ product }) => {
   const removeHandler = (id: string | number) => console.log(id);
 
   return (
-    <li key={id}>
-      <div className="flex items-center justify-between">
+    <li className="list-none" key={id}>
+      <div className="flex items-center justify-between w-80">
         <img className="w-12 h-12 m-3" src={image} alt={title} />
         <h3 className="mx-2">{title}</h3>
         <div>{`${count} x ${price}`}</div>

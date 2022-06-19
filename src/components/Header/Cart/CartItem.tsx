@@ -1,6 +1,5 @@
 import React from 'react';
 import { FaTrash } from 'react-icons/fa';
-// import { ICartItem } from '../../../types';
 
 const CartItem = ({ product }) => {
   const { id, image, title, count, price } = product;

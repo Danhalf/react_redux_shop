@@ -3,7 +3,7 @@ interface IRating {
   count: number;
 }
 
-interface IProduct {
+interface IProductData {
   id: string | number;
   title: string;
   price: number;
@@ -13,8 +13,8 @@ interface IProduct {
   rating: IRating;
 }
 
-interface ICartItem extends IProduct {
+interface ICartItem extends IProductData {
   count: number;
 }
 
-export { IProduct, ICartItem };
+export { IProductData, ICartItem };

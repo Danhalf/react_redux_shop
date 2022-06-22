@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { BsCashCoin } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { IProductData } from '../../types';
@@ -8,8 +8,11 @@ import { addToCart } from './ProductsSlice.ts';
 const ProductCart: FC = ({ product }: any) => {
   const dispatch = useDispatch();
   const { id, image, title, price }: IProductData = product;
+  const [count, setCount] = useState(1);
 
-  const addToCardHandler = () => dispatch(addToCart(product));
+  const addToCardHandler = () => dispatch(addToCart({ ...product, count }));
+
+  const getCount = (cb) => setCount(cb);
 
   return (
     <li
@@ -18,8 +21,9 @@ const ProductCart: FC = ({ product }: any) => {
     >
       <img className="h-1/2" src={image} alt={title} />
       <h3 className="">{title}</h3>
+      {count}
       <div>Price: {price} $</div>
-      <Quantity minValue={1} maxValue={10} />
+      <Quantity minValue={1} maxValue={10} getCount={getCount} />
       <button
         onClick={addToCardHandler}
         className="flex p-4 absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 items-center border bg-white hover:bg-slate-500 border-slate-500 rounded-full justify-center mx-auto"

@@ -6,7 +6,7 @@ const Cart = ({ isShowCart }) => {
   const { cart } = useSelector((state: any) => state.products);
   const currency = '$';
 
-  const sumPrices = () => +cart.reduce((acc, curr) => acc + curr.price, 0);
+  const sumPrices = () => +cart.reduce((acc, curr) => acc + curr.total, 0).toFixed(2);
 
   return (
     <div

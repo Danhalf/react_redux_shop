@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { IProductData } from '../../types';
+import { ICartItem, IProductData } from '../../types';
 
 const productsUrl = 'https://fakestoreapi.com/products';
 
@@ -34,7 +34,7 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async (_
 
 interface IProductsState {
   products: IProductData | [];
-  cart: IProductData | [];
+  cart: ICartItem | any[];
   loading: boolean;
   error: string | null;
 }
@@ -50,9 +50,22 @@ export const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    addToCart: (state, { payload }) => {
+    addToCart: (state, { payload }: PayloadAction<ICartItem>) => {
       const { cart } = state;
-      cart.push({ ...payload, count: 1 });
+      const { id, count, price } = payload;
+      const currentCart = Object.values(cart).map((item) => item.id);
+      const isProductAdded = currentCart.findIndex((item) => item === id);
+      if (isProductAdded < 0) {
+        cart.push({ ...payload, total: count * price });
+        return;
+      }
+      const currentProduct = cart[isProductAdded];
+      currentProduct.count += count;
+      currentProduct.total += count * price;
+    },
+    removeFromCart: (state, { payload }: PayloadAction<ICartItem>) => {
+      const { id } = payload;
+      state.cart = state.cart.filter((item) => item.id !== id);
     },
   },
   extraReducers: (builder) => {
@@ -60,7 +73,7 @@ export const productsSlice = createSlice({
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(fetchProducts.fulfilled, (state, { payload }) => {
+    builder.addCase(fetchProducts.fulfilled, (state, { payload }: PayloadAction<any>) => {
       state.loading = false;
       state.products = payload;
     });
@@ -71,6 +84,6 @@ export const productsSlice = createSlice({
   },
 });
 
-export const { addToCart } = productsSlice.actions;
+export const { addToCart, removeFromCart } = productsSlice.actions;
 
 export default productsSlice.reducer;

@@ -11,10 +11,12 @@ interface IProductData {
   description: string;
   category: string;
   rating: IRating;
+  inStock?: number;
 }
 
 interface ICartItem extends IProductData {
   count: number;
+  total: number;
 }
 
 export { IProductData, ICartItem };

@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 
-const Quantity = ({ minValue, maxValue }) => {
+const Quantity = ({ minValue, maxValue, getCount }) => {
   const [quantity, setQuantity] = useState(1);
 
   const setQuantityHandler = (value) => {
-    if (value < minValue) return setQuantity(minValue);
-    if (value > maxValue) return setQuantity(maxValue);
+    if (value < minValue) {
+      getCount(minValue);
+      return setQuantity(minValue);
+    }
+    if (value > maxValue) {
+      getCount(maxValue);
+      return setQuantity(maxValue);
+    }
     setQuantity(value);
+    getCount(value);
   };
 
   return (
